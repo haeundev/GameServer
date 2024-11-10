@@ -1,0 +1,15 @@
+D:\Source\GameServer\Server\ServerCore\bin\Debug\net8.0\ServerCore.exe
+D:\Source\GameServer\Server\ServerCore\bin\Debug\net8.0\ServerCore.deps.json
+D:\Source\GameServer\Server\ServerCore\bin\Debug\net8.0\ServerCore.runtimeconfig.json
+D:\Source\GameServer\Server\ServerCore\bin\Debug\net8.0\ServerCore.dll
+D:\Source\GameServer\Server\ServerCore\bin\Debug\net8.0\ServerCore.pdb
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.GeneratedMSBuildEditorConfig.editorconfig
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.AssemblyInfoInputs.cache
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.AssemblyInfo.cs
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.csproj.CoreCompileInputs.cache
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.sourcelink.json
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.dll
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\refint\ServerCore.dll
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.pdb
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ServerCore.genruntimeconfig.cache
+D:\Source\GameServer\Server\ServerCore\obj\Debug\net8.0\ref\ServerCore.dll
