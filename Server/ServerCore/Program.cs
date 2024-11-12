@@ -1,47 +1,51 @@
-﻿using System;
-using System.Threading;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
-class GameServer
+namespace ServerCore
 {
-    // 각 스레드가 클라이언트 연결 상태를 저장하기 위한 TLS 변수
-    private static ThreadLocal<ConnectionState> _connectionState = new ThreadLocal<ConnectionState>(() => new ConnectionState());
-
-    static void Main(string[] args)
+    internal class Program
     {
-        // 예를 들어 클라이언트 처리용 스레드 시작
-        Thread clientHandler1 = new Thread(HandleClient);
-        Thread clientHandler2 = new Thread(HandleClient);
-        Thread clientHandler3 = new Thread(HandleClient);
+        private static readonly Listener _listener = new();
 
-        clientHandler1.Start();
-        clientHandler2.Start();
-        clientHandler3.Start();
+        private static void OnAcceptHandler(Socket clientSocket)
+        {
+            try
+            {
+                // 클라이언트로부터 받은 데이터를 저장할 버퍼
+                var recvBuff = new byte[1024];
+                var recvBytes = clientSocket.Receive(recvBuff); // 클라이언트로부터 받은 데이터의 바이트 수
+                var recvData = Encoding.UTF8.GetString(recvBuff, 0, recvBytes); // 바이트 배열을 문자열로 변환
+                Console.WriteLine($"[From Client] {recvData}");
 
-        clientHandler1.Join();
-        clientHandler2.Join();
-        clientHandler3.Join();
+                // 클라이언트에게 답장을 보낼 데이터
+                var sendBuff = Encoding.UTF8.GetBytes("Welcome to Server!");
+                clientSocket.Send(sendBuff); // 클라이언트에게 데이터 전송
+
+                // 클라이언트 소켓 닫기
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        private static void Main(string[] args)
+        {
+            // DNS (Domain Name System)
+            var host = Dns.GetHostName(); // 현재 컴퓨터의 호스트 이름을 가져옴
+            var ipHost = Dns.GetHostEntry(host); // 호스트 이름에 해당하는 IP 주소들을 가져옴
+            var ipAddr = ipHost.AddressList[0]; // IP 주소들 중 첫 번째 주소를 선택
+            var endPoint = new IPEndPoint(ipAddr, 7777); // IP 주소와 포트 번호를 묶어서 IPEndPoint 객체 생성
+
+            _listener.Init(endPoint, OnAcceptHandler);
+
+            while (true)
+            {
+            }
+        }
     }
-
-    static void HandleClient()
-    {
-        // 각 스레드가 고유한 연결 상태를 설정
-        _connectionState.Value.ClientId = Thread.CurrentThread.ManagedThreadId;
-        _connectionState.Value.Status = "Connected";
-
-        Console.WriteLine($"Thread ID: {Thread.CurrentThread.ManagedThreadId}, Client ID: {_connectionState.Value.ClientId}, Status: {_connectionState.Value.Status}");
-
-        // 클라이언트 처리 로직을 수행
-        // 예: 게임 패킷 처리, 상태 업데이트 등
-
-        // 연결 상태를 업데이트
-        _connectionState.Value.Status = "Disconnected";
-        Console.WriteLine($"Thread ID: {Thread.CurrentThread.ManagedThreadId}, Client ID: {_connectionState.Value.ClientId}, Status: {_connectionState.Value.Status}");
-    }
-}
-
-// 클라이언트의 연결 상태를 나타내는 클래스
-class ConnectionState
-{
-    public int ClientId { get; set; }
-    public string Status { get; set; }
 }
